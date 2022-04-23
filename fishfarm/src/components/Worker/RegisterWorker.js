@@ -2,13 +2,27 @@ import { useForm } from 'react-hook-form';
 
 function RegisterWorker() {
 
-    const { register, handleSubmit,formState: { errors } } = useForm();
+    const { register, handleSubmit} = useForm();
 
     const onRegister = (data,e) => {
         alert("clicker");
         console.log(data);
         e.target.reset();
-    }
+
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              name: data.name,
+              numberOfCages: data.numberOfCages,
+              longitude: data.longitude,
+              latitude: data.latitude,
+              isBargeExist: data.isBargeExist
+            })
+          };
+
+          
+    };
 
     return (
         <form onSubmit={handleSubmit(onRegister)}>
@@ -18,19 +32,19 @@ function RegisterWorker() {
                     <input type="text" className="form-control" id="name"  {...register("name",{ required: true, maxLength: 100 })} />
                 </div>
                 <div className="form-group col-md-6">
-                    <label for="gps">Age</label>
-                    <input type="number" className="form-control" id="gps" {...register("age",{ required: true, min: 1 , max:60})} />                    
+                    <label for="age">Age</label>
+                    <input type="number" className="form-control" id="age" {...register("age",{ required: true, min: 1 , max:60})} />                    
                 </div>
                 <div className="form-group col-md-6">
-                    <label for="name">Email</label>
-                    <input type="email" className="form-control" id="name"  {...register("email",{ required: true, maxLength: 100 })} />
+                    <label for="email">Email</label>
+                    <input type="email" className="form-control" id="email"  {...register("email",{ required: true, maxLength: 100 })} />
                 </div>
             </div>
 
             <div className="form-row">
 
                 <div className="form-group col-md-4">
-                    <label for="inputState">Worker Position</label>
+                    <label for="workerPosition">Worker Position</label>
                     <select id="inputState" className="form-control" {...register("workerPosition")}>
                         <option  value='CEO'>CEO</option>
                         <option selected value='Worker'>Worker</option>
