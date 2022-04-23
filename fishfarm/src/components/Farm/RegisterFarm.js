@@ -7,28 +7,18 @@ function RegisterFarm() {
   const onRegister = (data, e) => {
     alert("clicker");
 
-    try {
-      let responce = fetch("https://httpbin.org/post", {
-        method: "POST",
-        body: JSON.stringify({
-          name: data.name,
-          gps: data.gps,
-          numberOfCages: data.numberOfCages,
-          barge : data.barge,
-          profileImage : data.profileImage
-        }),
-      });
-      let jsonResponce = responce.json();
-      if (jsonResponce.status === 200) {
-        alert("Sucess")
-        e.target.reset();
-
-      } else {
-        alert("error")
-      }
-    } catch (err) {
-      console.log(err);
-    }
+    const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ 
+        name: data.name
+       })
+  };
+  fetch('http://localhost:55687/api/farm', requestOptions)
+      .then(response => response.json())
+      .then((data) => {
+               alert(data.status);                   
+    })
     
   };
 
@@ -41,7 +31,12 @@ function RegisterFarm() {
           <input type="text" className="form-control" id="name" placeholder="Name" {...register("name", { required: true, maxLength: 100 })} />
         </div>
         <div className="form-group col-md-6">
-          <label for="gps">GPS Position</label>
+          <label for="gps">Longitude</label>
+          <input type="number" className="form-control" id="gps" step=".0001" {...register("Longitude", { required: true, min: 0 })} />
+          {errors.name?.gps === 'required' && "GPS location is required"}
+        </div>
+        <div className="form-group col-md-6">
+          <label for="gps">latitude</label>
           <input type="number" className="form-control" id="gps" step=".0001" {...register("gps", { required: true, min: 0 })} />
           {errors.name?.gps === 'required' && "GPS location is required"}
         </div>
