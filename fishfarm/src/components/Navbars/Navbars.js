@@ -10,6 +10,9 @@ function Navbar() {
             <li className="nav-item">
               <a className="nav-link" href="RegisterWorker">Register Worker </a>
             </li>
+            <li className="nav-item">
+              <a className="nav-link" href="ViewFarm">View Farms </a>
+            </li>
           </ul>
   
         </div>
