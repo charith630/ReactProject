@@ -1,8 +1,39 @@
-import { Link } from 'react-router-dom'
+import { useState, useEffect } from "react";
 
 function ViewFarm() {
 
-    
+    const [farms, setFarms] = useState([]);
+
+    const LoadFarmData = () => {
+        useEffect(() => {
+            fetch('http://localhost:55687/api/farm')
+            .then((response) => {
+              return response.json();
+            })
+            .then((data) => {
+              const farmList = data.results.map((farmData) => {
+                return {
+                  name: farmData.name,
+                  age: farmData.age,
+                  email: farmData.email,
+                  workerPosition: farmData.workerPosition,
+                  certifiedUntil:farmData.certifiedUntil
+                };
+              });
+              setFarms(farmList);
+            });
+        }, [])
+    }
+
+    const tableConetent = farms.forEach(item => {
+        return <tr>
+          <th>{item.name}</th> 
+          <th>{item.age}</th> 
+          <th>{item.email}</th> 
+          <th>{item.workerPosition}</th> 
+          <th>{item.certifiedUntil}</th> 
+        </tr>
+   })
     return (
         <table className="table">
         <thead>
@@ -14,24 +45,7 @@ function ViewFarm() {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
-          </tr>
-          <tr>
-            <th scope="row">2</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-          </tr>
-          <tr>
-            <th scope="row">3</th>
-            <td>Larry</td>
-            <td>the Bird</td>
-            <td><Link to='/new/location/'>Click Me</Link></td>
-          </tr>
+        {tableConetent}
         </tbody>
       </table>
     );

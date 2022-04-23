@@ -2,42 +2,53 @@ import { useForm } from 'react-hook-form';
 
 function RegisterWorker() {
 
-    const { register, handleSubmit} = useForm();
+    const { register, handleSubmit, formState: { errors } } = useForm();
 
-    const onRegister = (data,e) => {
-        alert("clicker");
-        console.log(data);
-        e.target.reset();
-
+    const onRegister = (data, e) => {
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-              name: data.name,
-              numberOfCages: data.numberOfCages,
-              longitude: data.longitude,
-              latitude: data.latitude,
-              isBargeExist: data.isBargeExist
+                name: data.name,
+                age: data.age,
+                email: data.email,
+                Workerposition: data.workerPosition,
+                CertifiedUntil: data.CertifiedUntil
             })
-          };
 
-          
-    };
+        }
 
+        fetch('http://localhost:55687/api/Worker', requestOptions)
+            .then(response => response.json())
+            .then((data) => {
+                if (data.status == 200) {
+                    alert("Registration process successful")
+
+                }
+                else {
+                    alert("Registration process failed")
+                }
+            })
+
+    }
     return (
         <form onSubmit={handleSubmit(onRegister)}>
             <div className="form-row">
                 <div className="form-group col-md-6">
                     <label for="name">Name</label>
-                    <input type="text" className="form-control" id="name"  {...register("name",{ required: true, maxLength: 100 })} />
+                    <input type="text" className="form-control" id="name"  {...register("name", { required: true, maxLength: 100 })} />
                 </div>
                 <div className="form-group col-md-6">
                     <label for="age">Age</label>
-                    <input type="number" className="form-control" id="age" {...register("age",{ required: true, min: 1 , max:60})} />                    
+                    <input type="number" className="form-control" id="age" {...register("age", { required: true, min: 1, max: 60 })} />
                 </div>
                 <div className="form-group col-md-6">
                     <label for="email">Email</label>
-                    <input type="email" className="form-control" id="email"  {...register("email",{ required: true, maxLength: 100 })} />
+                    <input type="email" className="form-control" id="email"  {...register("email", { required: true, maxLength: 100 })} />
+                </div>
+                <div className="form-group col-md-6">
+                    <label for="CertifiedUntil">Certified Until</label>
+                    <input type="date" className="form-control" id="CertifiedUntil"  {...register("CertifiedUntil", { required: true })} />
                 </div>
             </div>
 
@@ -45,8 +56,8 @@ function RegisterWorker() {
 
                 <div className="form-group col-md-4">
                     <label for="workerPosition">Worker Position</label>
-                    <select id="inputState" className="form-control" {...register("workerPosition")}>
-                        <option  value='CEO'>CEO</option>
+                    <select id="workerPosition" className="form-control" {...register("workerPosition")}>
+                        <option value='CEO'>CEO</option>
                         <option selected value='Worker'>Worker</option>
                         <option value='Captain'>Captain</option>
                     </select>

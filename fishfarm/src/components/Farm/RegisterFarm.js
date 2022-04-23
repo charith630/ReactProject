@@ -21,11 +21,11 @@ function RegisterFarm() {
       .then(response => response.json())
       .then((data) => {
         if (data.status == 200) {
-          alert("Successfully Created ")
+          alert("Registration process successful")
           
         }
         else {
-          alert("Farm Creation Process Failed ")
+          alert("Registration process failed")
         }
       })
 
